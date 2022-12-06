@@ -6,6 +6,8 @@ const cors = require("cors");
 const fileUpload = require("express-fileupload");
 const connect = require("../config/db");
 const { route } = require("../Routes/signup/signup.route");
+const http = require("http");
+const { Server } = require("socket.io");
 const SigninRoute = require("../Routes/signin/signin.route");
 const SongRoute = require("../Routes/songs/songs.route");
 const cookieParser = require("cookie-parser");
@@ -48,6 +50,29 @@ app.use(
 
 app.get("/", (req, res) => {
   res.send("hello world");
+});
+
+// socket.io
+
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"],
+  },
+});
+
+
+io.on("connection", (socket) => {
+
+  socket.on("join_room",(data)=>{
+    socket.join(data);
+  })
+
+  socket.on("send_message", (data) => {
+    socket.to(data.room1).emit("receive_message",data);
+  });
+  
 });
 
 //github signIn
@@ -95,7 +120,7 @@ app.get("/github/callback", async (req, res) => {
 
 //port listen
 
-app.listen(PORT, async () => {
+server.listen(PORT, async () => {
   await connect();
-  console.log(`http://localhost:${PORT}/`);
+  console.log(`http://localhost:${PORT}`);
 });

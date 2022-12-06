@@ -1,4 +1,5 @@
 const express = require("express");
+const { Cookie } = require("express-session");
 const app = express.Router();
 const { passport } = require("../signup/signup.route");
 
@@ -24,8 +25,13 @@ app.get("/success", (req, res) => {
 });
 
 app.get("/logout", function (req, res, next) {
-  req.sessionStore.clear();
-  res.clearCookie("SESS_NAME");
+  // res.clearCookie("SESS_NAME");
+  // req.session.destroy();
+  console.log(req.sessionID);
+  // req.sessionStore.clear();
+  // res.clearCookie('SESS_NAME', { path: '/' });
+  // Cookie.clear();
+  // cookie.remove();
   res.send("hello");
 });
 

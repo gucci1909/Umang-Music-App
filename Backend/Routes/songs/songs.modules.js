@@ -6,6 +6,7 @@ songSchema = new mongoose.Schema(
     title: { required:true,type: String },
     imageURL: { required:true, type: String },
     releaseYearOfSong: { required:true, type: Number },
+    roomNo : {required:true,type:Number},
     songURL: { type: String },
   }
 );

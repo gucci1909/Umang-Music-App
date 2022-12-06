@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const app = express.Router();
 const mongoose = require("mongoose");
@@ -16,8 +17,8 @@ app.use(
 
 cloudinary.config({
   cloud_name: "dtdqzefvj",
-  api_key: "351574647618421",
-  api_secret: "DyoHtZ1sWtxvbyMMw1ULXwY1mYk",
+  api_key: process.env.KEY_CLOUDINARY,
+  api_secret: process.env.SECRET_CLOUDINARY,
 });
 
 app.get("/", (req, res) => {

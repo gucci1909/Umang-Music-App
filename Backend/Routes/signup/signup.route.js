@@ -136,7 +136,7 @@ passport.use(
           }
         );
         const data = {
-          create: users,
+          create: users[0],
           AccessToken: token,
         };
         return cb(null, data);

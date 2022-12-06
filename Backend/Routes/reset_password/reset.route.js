@@ -12,9 +12,9 @@ const hbs = require("handlebars");
 const template = hbs.compile(fs.readFileSync(__dirname + "/mail.hbs", "utf-8"));
 
 var transporter = nodemailer.createTransport({
-  port: 465,
+  port: process.env.SMTP_PORT,
   service: "gmail",
-  host: "smtp.gmail.com",
+  host: process.env.SMTP_HOST,
   auth: {
     user: process.env.EMAIL_SMTP,
     pass: process.env.PASSWORD_SMTP,
