@@ -62,7 +62,6 @@ const io = new Server(server, {
   },
 });
 
-
 io.on("connection", (socket) => {
 
   socket.on("join_room",(data)=>{
@@ -72,7 +71,7 @@ io.on("connection", (socket) => {
   socket.on("send_message", (data) => {
     socket.to(data.room1).emit("receive_message",data);
   });
-  
+
 });
 
 //github signIn
