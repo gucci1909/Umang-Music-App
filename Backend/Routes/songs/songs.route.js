@@ -9,12 +9,6 @@ const fileUpload = require("express-fileupload");
 const checkAdmin = require("../../middleware/checkAdmin");
 
 app.use(checkToken);
-app.use(
-  fileUpload({
-    useTempFiles: true,
-  })
-);
-
 cloudinary.config({
   cloud_name: "dtdqzefvj",
   api_key: process.env.KEY_CLOUDINARY,
@@ -56,49 +50,60 @@ app.get("/:id", (req, res) => {
     });
 });
 
-app.post("/", checkAdmin, (req, res) => {
-  const file = req.files.songs;
-  cloudinary.uploader.upload(
-    file.tempFilePath,
-    {
-      resource_type: "video",
-      folder: "video",
-    },
-    (err, result) => {
-      if (err) {
-        res.status(404).json({
-          error: "Error in uploading",
-        });
-      } else {
-        const song = new Songs({
-          _id: new mongoose.Types.ObjectId(),
-          title: req.body.title,
-          imageURL: req.body.imageURL,
-          releaseYearOfSong: req.body.releaseYearOfSong,
-          songURL: result.url,
-        });
-        song.save();
-
-        Songs.find()
-          .then((response) => {
-            if (result)
-              res.status(200).json({
-                Songs: response,
-              });
-            else {
-              res.status(404).json({
-                error: "You are doing something wrong",
-              });
-            }
-          })
-          .catch((err) => {
-            res.status(404).json({
-              error: "You are doing something wrong",
-            });
+app.post("/",checkAdmin,async (req, res) => {
+  // console.log(re);
+  const room_users = await Songs.find({
+    roomNo: req.body.roomNo
+  });
+  if (room_users.length >= 1) {
+    res.status(404).json({
+      message: "Room No. already exists",
+    });
+  } else {
+    const file = req.files.songs;
+    cloudinary.uploader.upload(
+      file.tempFilePath,
+      {
+        resource_type: "video",
+        folder: "video",
+      },
+      (err, result) => {
+        if (err) {
+          res.status(404).json({
+            error: "Error in uploading",
           });
+        } else {
+          const song = new Songs({
+            _id: new mongoose.Types.ObjectId(),
+            title: req.body.title,
+            imageURL: req.body.imageURL,
+            releaseYearOfSong: req.body.releaseYearOfSong,
+            roomNo : req.body.roomNo,
+            songURL: result.url,
+          });
+          song.save();
+  
+          Songs.find()
+            .then((response) => {
+              if (result)
+                res.status(200).json({
+                  Songs: response,
+                });
+              else {
+                res.status(404).json({
+                  error: "You are doing something wrong",
+                });
+              }
+            })
+            .catch((err) => {
+              res.status(404).json({
+                error: err,
+              });
+            });
+        }
       }
-    }
-  );
+    );
+  }
 });
 
 app.delete("/:id", checkAdmin, (req, res) => {

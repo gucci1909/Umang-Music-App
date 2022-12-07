@@ -21,6 +21,11 @@ app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(
+  fileUpload({
+    useTempFiles: true,
+  })
+);
+app.use(
   session({
     name: "SESS_NAME",
     secret: "123456789",
@@ -42,11 +47,7 @@ app.use("/otp", otpRoute);
 app.use("/signin", SigninRoute);
 app.use("/songs", SongRoute);
 app.use("/favSongs", FavSongRoute);
-app.use(
-  fileUpload({
-    useTempFiles: true,
-  })
-);
+
 
 app.get("/", (req, res) => {
   res.send("hello world");
@@ -69,7 +70,7 @@ io.on("connection", (socket) => {
   })
 
   socket.on("send_message", (data) => {
-    socket.to(data.room1).emit("receive_message",data);
+    io.in(data.room1).emit("receive_message",data);
   });
 
 });
