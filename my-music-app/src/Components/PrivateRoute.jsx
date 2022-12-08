@@ -8,8 +8,9 @@ function PrivateRoute({children}) {
   console.log(isAuth);
   if(!isAuth){
     return <Navigate to="/login" />
+  }else{
+    return children;
   }
-  return children;
 }
 
 export default PrivateRoute

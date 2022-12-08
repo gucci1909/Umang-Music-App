@@ -13,6 +13,27 @@
   }
 }
 
+body{
+  overflow: overlay;
+}
+::-webkit-scrollbar {
+  display: none;
+}
+
+.css-1rh9uwz {
+  width: auto !important;
+  position: auto !important;
+  top: auto !important;
+  left: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  transform: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+}
+
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;

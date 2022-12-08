@@ -43,9 +43,6 @@ export const verification = () => async (dispatch) => {
   } else {
     refresh_token = JSON.parse(localStorage.getItem("REFRESH_TOKEN"));
   }
-
-  // var access_token = JSON.parse(localStorage.getItem("ACCESS_TOKEN")) || "";
-  // var refresh_token = JSON.parse(localStorage.getItem("REFRESH_TOKEN")) || "";
   try {
     const headers = {
       access_token: access_token,
@@ -79,35 +76,23 @@ export const verification = () => async (dispatch) => {
 //google login
 
 export const google_login = () => async (dispatch) => {
-  // sessionStorage.clear();
   try {
     const res = await axios.get(`http://localhost:8080/auth/success`);
     const data = res.data;
     console.log(data);
-    // const data_collection = JSON.parse(data);
-    // console.log(data_collection)
-    // console.log(data_collection)
-    // if(data_collection.passport.user){
-      // dispatch({type:REMAIN_LOGIN});
-    // }
-    // console.log(data_collection.passport.user.create[0].username);
-    // if (data_collection) {
-      // localStorage.setItem(
-      //   "ACCESS_TOKEN",
-      //   JSON.stringify(data_collection.passport.user.AccessToken)
-      // );
-      // localStorage.setItem(
-      //   "_ID",
-      //   JSON.stringify(data_collection.passport.user.create[0]._id)
-      // );
-      // localStorage.setItem(
-      //   "USERNAME",
-      //   JSON.stringify(data_collection.passport.user.create[0].username)
-      // );
-      // dispatch({ type: REMAIN_LOGIN });
-    // } else {
-      // console.log("error");
-    // }
+    const data_collection = JSON.parse(data);
+    if (data_collection.passport.user!== undefined) {
+      const user_name = data_collection.passport.user.create.username;
+      const user_id = data_collection.passport.user.create._id;
+      const access_token = data_collection.passport.user.AccessToken;
+      localStorage.setItem("ACCESS_TOKEN", JSON.stringify(access_token));
+      localStorage.setItem("_ID", JSON.stringify(user_id));
+      localStorage.setItem("USERNAME", JSON.stringify(user_name));
+
+      dispatch({ type: REMAIN_LOGIN });
+    } else {
+      console.log("failed logging in with google");
+    }
   } catch (error) {
     console.log(error);
   }

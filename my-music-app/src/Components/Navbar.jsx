@@ -19,11 +19,17 @@ const Navbar = () => {
     base: false,
     lg: true,
   });
+  let { count } = useSelector((store) => store.favSong);
+  console.log(count);
   const { isAuth } = useSelector((store) => store.login);
+
   const handleLogout = async () => {
     const refresh_token =
       JSON.parse(localStorage.getItem("REFRESH_TOKEN")) || "";
     if (refresh_token === "") {
+      localStorage.removeItem("ACCESS_TOKEN");
+      localStorage.removeItem("_ID");
+      localStorage.removeItem("USERNAME");
       const res = await axios.get("http://localhost:8080/auth/logout");
       console.log(res);
       screenLoad();
@@ -51,6 +57,7 @@ const Navbar = () => {
           <Image
             h="80px"
             w="100px"
+            zIndex={2}
             ml="35px"
             borderRadius={"20px"}
             src={process.env.PUBLIC_URL + "/Images/U.jpg"}
@@ -104,10 +111,21 @@ const Navbar = () => {
               fontSize="26px"
               marginTop={"25px"}
             >
-              <Text>{0}</Text>
+              <Text>{count}</Text>
             </Box>
           </Box>
-          {!isAuth ? "" : <Text color={"white"}>Hii,{User}</Text>}
+          {!isAuth ? (
+            ""
+          ) : (
+            <Text
+              fontSize="26px"
+              marginTop={"25px"}
+              ml={"-60px"}
+              color={"white"}
+            >
+              Hii, {User}
+            </Text>
+          )}
           <ButtonGroup marginLeft={"-70px"} marginTop="20px" gap="20px">
             {!isAuth ? (
               <>
@@ -120,7 +138,7 @@ const Navbar = () => {
               </>
             ) : (
               <Button
-                ml={"150px"}
+                ml={"90px"}
                 onClick={() => handleLogout()}
                 colorScheme="pink"
                 variant="solid"
