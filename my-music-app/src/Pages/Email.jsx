@@ -20,7 +20,6 @@ function Email() {
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isError, setIsError] = useState(false);
-  console.log(isError);
   const navigate = useNavigate();
   const handleChange = (e) => {
     let { name, value } = e.target;
