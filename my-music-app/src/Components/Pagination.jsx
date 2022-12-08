@@ -5,7 +5,7 @@ function createArrayOfSize(n) {
 }
 
 function Pagination({totalPages,currentPage,handlePageChange}) {
-  let pages = createArrayOfSize(totalPages).map((a, i) => <Button variant={"ghost"} disabled={currentPage===(i+1)} onClick={()=>handlePageChange(i+1)} >{i+1}</Button>);
+  let pages = createArrayOfSize(totalPages).map((a,i) => <Button key={i} variant={"ghost"} disabled={currentPage===(i+1)} onClick={()=>handlePageChange(i+1)} >{i+1}</Button>);
   return <Box>{pages}</Box>;
 }
 

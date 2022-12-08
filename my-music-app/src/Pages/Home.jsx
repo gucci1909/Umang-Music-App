@@ -163,11 +163,7 @@ function Home() {
             ))}
         </Grid>
       </Container>
-      <Flex 
-      justifyContent={"center"}
-      alignContent="center"
-      gap="20px"
-      >
+      <Flex justifyContent={"center"} alignContent="center" gap="20px">
         <Button
           disabled={page === 1}
           onClick={() => handlePagination(-1)}

@@ -16,6 +16,7 @@ const googleRoute = require("../Routes/googlepassport/google");
 const passport = require("passport");
 const session = require("express-session");
 const otpRoute = require("../Routes/reset_password/reset.route");
+const Chat = require("./chatModules");
 
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
@@ -53,6 +54,13 @@ app.get("/", (req, res) => {
   res.send("hello world");
 });
 
+// app.use('*', (req, res) => {
+//   res.status(404).json({
+//     success: false,
+//     message: 'API endpoint doesnt exist'
+//   })
+// });
+
 // socket.io
 
 const server = http.createServer(app);
@@ -63,13 +71,34 @@ const io = new Server(server, {
   },
 });
 
+app.get("/comments/:id",async(req,res)=>{
+  try {
+    const id = req.params.id;
+    const Chats = await Chat.find({chat_id:id});
+    res.status(200).json({
+      Comments: Chats
+    });
+  } catch (error) {
+    res.status(200).send("THIS ROOM ID NOT FOUND");
+  }
+
+})
+
 io.on("connection", (socket) => {
 
   socket.on("join_room",(data)=>{
+
     socket.join(data);
   })
 
-  socket.on("send_message", (data) => {
+  socket.on("send_message",async (data) => {
+
+    const messages = new Chat({
+      chat_id : data.room1,
+      message: data.state
+    })
+    const response = await messages.save();
+    // console.log(response);
     io.in(data.room1).emit("receive_message",data);
   });
 

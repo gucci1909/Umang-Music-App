@@ -163,6 +163,7 @@ function Login() {
             <Input
               isDisabled={loading}
               w="350px"
+              ml={"8px"}
               color="darkBlue"
               autoComplete="off"
               bgColor={"lightskyblue"}

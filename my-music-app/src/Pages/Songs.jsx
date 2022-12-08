@@ -29,6 +29,8 @@ function Songs() {
   const [state, setState] = useState("");
   const [message, setMessage] = useState([]);
   const [datas, setDatas] = useState({});
+  const [roomNo , setRoomNo] = useState(true);
+  const [data_send , setData_send] = useState([]);
   const audioElement = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const space = useRef(null);
@@ -63,6 +65,10 @@ function Songs() {
       const data = res.data;
       space.current?.scrollIntoView({ behavior: "smooth", block: "start" });
       const room1 = Number(data.Song.roomNo);
+      if(roomNo){
+        handleSendMessage(data.Song.roomNo);
+
+      }
       socket.emit("join_room", room1);
       setDatas(data.Song);
     } catch (error) {
@@ -81,6 +87,19 @@ function Songs() {
       audioElement.current.pause();
     }
   });
+
+  const handleSendMessage = async(roomNo) =>{
+    setRoomNo(false);
+    try {
+      const res = await axios.get(`http://localhost:8080/comments/${roomNo}`);
+      const data = res.data;
+      setData_send(data.Comments);
+      
+    } catch (error) {
+      console.log(error);
+    }
+
+  }
 
   useEffect(() => {
     socket.on("receive_message", (data) => {
@@ -217,6 +236,30 @@ function Songs() {
           mt={{ base: "-15px", lg: "auto" }}
           overflow="scroll"
         >
+          {data_send && data_send.map((el, i) => (
+              <Flex
+                justify="right"
+                alignItems="right"
+                height="auto"
+                w={{ base: "auto", lg: "auto" }}
+                mt={{ base: "20px", lg: "20px" }}
+                ml={{ base: "-480px", lg: "150px" }}
+                gap="2"
+                key={i}
+              >
+                <Box
+                  bg="#38B2AC"
+                  w={{ base: "200px", lg: "auto" }}
+                  p={2}
+                  h={{ base: "auto", lg: "auto" }}
+                  borderRadius={"20px"}
+                  mt={"10px"}
+                  color="white"
+                >
+                  <Text fontSize="24px">{el.message}</Text>
+                </Box>
+              </Flex>
+            ))}
           {message &&
             message.map((el, i) => (
               <Flex

@@ -5,7 +5,6 @@ const mongoose = require("mongoose");
 const Songs = require("./songs.modules");
 const checkToken = require("../../middleware/checkToken");
 const cloudinary = require("cloudinary").v2;
-const fileUpload = require("express-fileupload");
 const checkAdmin = require("../../middleware/checkAdmin");
 
 app.use(checkToken);
@@ -15,44 +14,47 @@ cloudinary.config({
   api_secret: process.env.SECRET_CLOUDINARY,
 });
 
-app.get("/", async(req, res) => {
+//GETTING ALL SONGS (LIMIT=6)
+app.get("/", async (req, res) => {
   try {
-    const {limit=6,page=1} = req.query;
-    const result = await Songs.find().limit(6).skip((page-1)*limit);
+    const { limit = 6, page = 1 } = req.query;
+    const result = await Songs.find()
+      .limit(6)
+      .skip((page - 1) * limit);
     res.status(200).json({
       Songs: result,
     });
   } catch (error) {
     res.status(404).json({
-      error: error
+      error: error,
     });
   }
 });
 
-app.get("/:id", (req, res) => {
-  Songs.findById(req.params.id)
-    .then((result) => {
-      if (result) {
-        res.status(200).json({
-          Song: result,
-        });
-      } else {
-        res.status(404).json({
-          message: "Song not found",
-        });
-      }
-    })
-    .catch((err) => {
-      res.status(500).json({
-        error: "Song not found",
+//GETTING ID BY PARAMS
+app.get("/:id", async (req, res) => {
+  try {
+    const result = await Songs.findById(req.params.id);
+    if (result) {
+      res.status(200).json({
+        Song: result,
       });
+    } else {
+      res.status(404).json({
+        message: "Song not found",
+      });
+    }
+  } catch (error) {
+    res.status(404).json({
+      error: "Song not found",
     });
+  }
 });
 
-app.post("/",checkAdmin,async (req, res) => {
-  // console.log(re);
+// POSTING SONGS ON DATABASE
+app.post("/", checkAdmin, async (req, res) => {
   const room_users = await Songs.find({
-    roomNo: req.body.roomNo
+    roomNo: req.body.roomNo,
   });
   if (room_users.length >= 1) {
     res.status(404).json({
@@ -66,78 +68,55 @@ app.post("/",checkAdmin,async (req, res) => {
         resource_type: "video",
         folder: "video",
       },
-      (err, result) => {
+      async (err, result) => {
         if (err) {
           res.status(404).json({
             error: "Error in uploading",
           });
         } else {
-          const song = new Songs({
-            _id: new mongoose.Types.ObjectId(),
-            title: req.body.title,
-            imageURL: req.body.imageURL,
-            artistNames:req.body.artistNames,
-            releaseYearOfSong: req.body.releaseYearOfSong,
-            roomNo : req.body.roomNo,
-            songURL: result.url,
-          });
-          song.save();
-  
-          Songs.find()
-            .then((response) => {
-              if (result)
-                res.status(200).json({
-                  Songs: response,
-                });
-              else {
-                res.status(404).json({
-                  error: "You are doing something wrong",
-                });
-              }
-            })
-            .catch((err) => {
-              res.status(404).json({
-                error: err,
-              });
+          try {
+            const song = new Songs({
+              _id: new mongoose.Types.ObjectId(),
+              title: req.body.title,
+              imageURL: req.body.imageURL,
+              artistNames: req.body.artistNames,
+              releaseYearOfSong: req.body.releaseYearOfSong,
+              roomNo: req.body.roomNo,
+              songURL: result.url,
             });
+            const response = await song.save();
+            res.status(200).json({
+              Songs: response,
+            });
+          } catch (error) {
+            res.status(404).json({
+              error: error,
+            });
+          }
         }
       }
     );
   }
 });
 
-app.delete("/:id", checkAdmin, (req, res) => {
-  Songs.deleteOne({ _id: req.params.id })
-    .then((result) => {
-      if (result) {
-        Songs.find()
-          .then((response) => {
-            if (result)
-              res.status(200).json({
-                Songs: response,
-              });
-            else {
-              res.status(404).json({
-                error: "You are doing something wrong",
-              });
-            }
-          })
-          .catch((err) => {
-            res.status(404).json({
-              error: "You are doing something wrong",
-            });
-          });
-      } else {
-        res.status(404).json({
-          message: "Song not found",
-        });
-      }
-    })
-    .catch((err) => {
-      res.status(404).json({
-        error: "You are doing something wrong",
+//DELETING ANY SONG BY ID
+app.delete("/:id", checkAdmin, async (req, res) => {
+  try {
+    const response = await Songs.deleteOne({ _id: req.params.id });
+    if (response)
+      res.status(200).json({
+        Songs: response,
       });
+    else {
+      res.status(404).json({
+        error: "ID NOT FOUND",
+      });
+    }
+  } catch (error) {
+    res.status(404).json({
+      error: "ID NOT FOUND",
     });
+  }
 });
 
 module.exports = app;
