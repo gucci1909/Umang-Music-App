@@ -23,7 +23,7 @@ app.get("/success", (req, res) => {
   }
 });
 
-app.get("/logout", function (req, res, next) {
+app.get("/logout", function (req, res) {
   req.sessionStore.clear();
   res.clearCookie("SESS_NAME");
   res.send("YOU HAVE BEEN LOGOUT SUCCESSFULLY");

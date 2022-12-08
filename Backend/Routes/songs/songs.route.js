@@ -77,6 +77,7 @@ app.post("/",checkAdmin,async (req, res) => {
             _id: new mongoose.Types.ObjectId(),
             title: req.body.title,
             imageURL: req.body.imageURL,
+            artistNames:req.body.artistNames,
             releaseYearOfSong: req.body.releaseYearOfSong,
             roomNo : req.body.roomNo,
             songURL: result.url,
