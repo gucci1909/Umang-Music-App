@@ -45,3 +45,23 @@ export const favSong_list = (user_id) => async (dispatch) => {
     dispatch({ type: ERROR_FAVSONG });
   }
 };
+
+export const favSong_delete = (song_id)=>async(dispatch)=>{
+  try {
+    const access_token = JSON.parse(localStorage.getItem("ACCESS_TOKEN"));
+    let config = {
+      headers: {
+        Authorization: "Bearer " + access_token,
+      },
+    };
+
+    const res = await axios.delete(
+      `http://localhost:8080/favSongs/${song_id}`,
+      config
+    );
+    const data = res.data;
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+  }
+}

@@ -15,19 +15,18 @@ cloudinary.config({
   api_secret: process.env.SECRET_CLOUDINARY,
 });
 
-app.get("/", (req, res) => {
-  Songs.find()
-    .exec()
-    .then((result) => {
-      res.status(200).json({
-        Songs: result,
-      });
-    })
-    .catch((err) => {
-      res.status(404).json({
-        error: err,
-      });
+app.get("/", async(req, res) => {
+  try {
+    const {limit=6,page=1} = req.query;
+    const result = await Songs.find().limit(6).skip((page-1)*limit);
+    res.status(200).json({
+      Songs: result,
     });
+  } catch (error) {
+    res.status(404).json({
+      error: error
+    });
+  }
 });
 
 app.get("/:id", (req, res) => {

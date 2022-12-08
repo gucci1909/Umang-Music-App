@@ -11,7 +11,7 @@ const Email = lazy(() => import("../Pages/Email.jsx"));
 const Reset = lazy(() => import("../Pages/Reset.jsx"));
 const AdminRoute = lazy(() => import("../Components/AdminRoute"));
 const Songs = lazy(() => import("../Pages/Songs"));
-const NotFound = lazy(()=>import("../Components/Not_Found"));
+// const NotFound = lazy(()=>import("../Components/Not_Found"));
 
 function AllRoutes() {
   return (
@@ -27,7 +27,14 @@ function AllRoutes() {
           }
         ></Route>
         <Route path="/signup" element={<Signup />}></Route>
-        <Route path="/*" element={<NotFound/>}></Route>
+        <Route
+          path="/*"
+          element={
+            <PrivateRoute>
+              <Home />
+            </PrivateRoute>
+          }
+        ></Route>
         <Route
           path="/favSong"
           element={
