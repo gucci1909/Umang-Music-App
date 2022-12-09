@@ -34,15 +34,33 @@ app.get("/", async (req, res) => {
 //GETTING ID BY PARAMS
 app.get("/:id", async (req, res) => {
   try {
+    // const bay = await Songs.getIndexes();
+    // console.log(bay)
+    // Songs.aggregate([
+      // {
+        // $group: {
+          // $_id:req.params.id,
+          // $title:{
+            // $_id:req.params.id
+          // }
+
+        // },
+      // },
+    // ]).exec((err,location)=>{
+      // if (err) throw err;
+    // res.send(location);
+    // })
+    // console.log("iuyg");
+    // res.send("oihgv");
     const result = await Songs.findById(req.params.id);
     if (result) {
-      res.status(200).json({
-        Song: result,
-      });
+    res.status(200).json({
+    Song: result,
+    });
     } else {
-      res.status(404).json({
-        message: "Song not found",
-      });
+    res.status(404).json({
+    message: "Song not found",
+    });
     }
   } catch (error) {
     res.status(404).json({

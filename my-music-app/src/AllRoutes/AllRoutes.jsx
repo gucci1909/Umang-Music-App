@@ -11,7 +11,6 @@ const Email = lazy(() => import("../Pages/Email.jsx"));
 const Reset = lazy(() => import("../Pages/Reset.jsx"));
 const AdminRoute = lazy(() => import("../Components/AdminRoute"));
 const Songs = lazy(() => import("../Pages/Songs"));
-// const NotFound = lazy(()=>import("../Components/Not_Found"));
 
 function AllRoutes() {
   return (
