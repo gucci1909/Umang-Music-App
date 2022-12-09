@@ -130,7 +130,7 @@ app.get("/github/callback", async (req, res) => {
   )
     .then((e) => e.json())
     .catch(console.error);
-  console.log(access_token);
+  // console.log(access_token);
 
   try {
     const userDetails = await fetch(`https://api.github.com/user`, {
@@ -139,7 +139,7 @@ app.get("/github/callback", async (req, res) => {
         Authorization: `Bearer ${access_token}`,
       },
     }).then((e) => e.json());
-    console.log(userDetails);
+    // console.log(userDetails);
   } catch (error) {
     console.log(error);
   }
