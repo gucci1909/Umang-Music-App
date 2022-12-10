@@ -17,6 +17,17 @@ const passport = require("passport");
 const session = require("express-session");
 const otpRoute = require("../Routes/reset_password/reset.route");
 const Chat = require("./chatModules");
+const Redis = require("ioredis");
+
+const redis = new Redis({
+  port: 14092 , // Redis port
+  host: "redis-14092.c212.ap-south-1-1.ec2.cloud.redislabs.com", // Redis host
+  username: "default", // needs Redis >= 6
+  password: "GlyEsyeKKXMLMwnUthiTmLjboR28tjJq",
+  db: 0, // Defaults to 0
+});
+
+
 
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
