@@ -70,8 +70,8 @@ app.post("/verify", (req, res) => {
           const newToken = jwt.sign(
             {
               // _id: verification._id,
-              username: verification.username,
-              userType: verification.userType,
+              username: refresh_verification.username,
+              userType: refresh_verification.userType,
             },
             "qwertyuiop",
             {

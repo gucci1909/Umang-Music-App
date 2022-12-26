@@ -26,9 +26,7 @@ app.get("/", async (req, res) => {
 
 app.get("/:id", async (req, res) => {
   try {
-    const favSongs = await FavSongs.find({ userID: req.params.id }).populate([
-      "songID",
-    ]);
+    const favSongs = await FavSongs.find({ userID: req.params.id }).populate(["songID"]);
     if (favSongs) {
       res.status(200).send(favSongs);
     } else {
