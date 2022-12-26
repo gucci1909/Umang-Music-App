@@ -7,18 +7,26 @@ import {
   Image,
   Text,
   useBreakpointValue,
+  useToast,
 } from "@chakra-ui/react";
 import axios from "axios";
 import * as React from "react";
 import { FiMenu } from "react-icons/fi";
 import { useSelector } from "react-redux";
-import { Link, NavLink } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const isDesktop = useBreakpointValue({
     base: false,
     lg: true,
   });
+  const location = useLocation();
+
+  console.log("hash", location.hash);
+  console.log("pathname", location.pathname);
+  console.log("search", location.search);
+  const toast = useToast();
+  const navigate = useNavigate();
   let { count } = useSelector((store) => store.favSong);
   console.log(count);
   const { isAuth } = useSelector((store) => store.login);
@@ -39,6 +47,30 @@ const Navbar = () => {
       localStorage.removeItem("_ID");
       localStorage.removeItem("USERNAME");
       screenLoad();
+    }
+  };
+  const handleNav = () => {
+    if (isAuth) {
+      return navigate("/favSong");
+    } else {
+      toast({
+        title: "You've to Login First",
+
+        status: "warning",
+        duration: 2000,
+      });
+    }
+  };
+  const handleHome = () => {
+    if (isAuth) {
+      return navigate("/");
+    } else {
+      toast({
+        title: "You've to Login First",
+
+        status: "warning",
+        duration: 2000,
+      });
     }
   };
   var User;
@@ -66,42 +98,40 @@ const Navbar = () => {
       </Box>
       {isDesktop ? (
         <Flex ml="650px" justifyContent={"space-between"}>
-          <NavLink
-            to="/"
-            style={({ isActive }) => ({
-              color: isActive ? "#EDF2F7" : "#545e6f",
-              background: isActive ? "#7600dc" : "#f0f0f0",
-              marginRight: "30px",
-              width: "100px",
-              borderRadius: "20px",
-              height: "40px",
-              paddingLeft: "15px",
-              fontSize: "26px",
-              marginTop: "25px",
-              marginLeft: "30px",
-              marginBottom: "25px",
-            })}
+          <Button
+            onClick={() => handleHome()}
+            color={location.pathname === "/" ? "#EDF2F7" : "#545e6f"}
+            background={location.pathname === "/" ? "#7600dc" : "#f0f0f0"}
+            marginRight="30px"
+            width="100px"
+            borderRadius="20px"
+            height="40px"
+            paddingLeft="15px"
+            fontSize="26px"
+            marginTop="25px"
+            marginLeft="30px"
+            marginBottom="25px"
           >
             Home
-          </NavLink>
+          </Button>
           <Box display={"flex"}>
-            <NavLink
-              to="/favSong"
-              style={({ isActive }) => ({
-                color: isActive ? "#EDF2F7" : "#545e6f",
-                background: isActive ? "#7600dc" : "#f0f0f0",
-                marginRight: "30px",
-                width: "145px",
-                height: "40px",
-                borderRadius: "20px",
-                paddingLeft: "15px",
-                fontSize: "26px",
-                marginTop: "25px",
-                marginBottom: "25px",
-              })}
+            <Button
+              color={location.pathname === "/favSong" ? "#EDF2F7" : "#545e6f"}
+              marginRight="30px"
+              width="145px"
+              borderRadius="20px"
+              height="40px"
+              background={
+                location.pathname === "/favSong" ? "#7600dc" : "#f0f0f0"
+              }
+              paddingLeft="15px"
+              fontSize="26px"
+              marginTop="25px"
+              marginBottom="25px"
+              onClick={() => handleNav()}
             >
               Fav Songs
-            </NavLink>
+            </Button>
             <Box
               backgroundColor={""}
               color={"#f0f0f0"}
