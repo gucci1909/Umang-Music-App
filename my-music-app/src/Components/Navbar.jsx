@@ -54,7 +54,7 @@ const Navbar = () => {
       return navigate("/favSong");
     } else {
       toast({
-        title: "You've to Login First",
+        title: "You've to Signin First",
 
         status: "warning",
         duration: 2000,
@@ -66,7 +66,7 @@ const Navbar = () => {
       return navigate("/");
     } else {
       toast({
-        title: "You've to Login First",
+        title: "You've to Signin First",
 
         status: "warning",
         duration: 2000,
