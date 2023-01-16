@@ -21,81 +21,131 @@
 //     console.log("error:",err);
 //   })
 
-const isOdd = (input) => {
-  const myPromise = new Promise((res, rej) => {
-    if (typeof input === "number") {
-      setTimeout(() => {
-        if (input % 2 !== 0) {
-          res(true);
-        } else {
-          res(false);
-        }
-      }, 3000);
-    } else {
-      rej("input is incorrect");
-    }
-  });
-  myPromise
-    .then((res) => {
-      console.log("response", res);
-    })
-    .catch((err) => {
-      console.log("error:", err);
-    });
-};
+// const isOdd = (input) => {
+//   const myPromise = new Promise((res, rej) => {
+//     if (typeof input === "number") {
+//       setTimeout(() => {
+//         if (input % 2 !== 0) {
+//           res(true);
+//         } else {
+//           res(false);
+//         }
+//       }, 3000);
+//     } else {
+//       rej("input is incorrect");
+//     }
+//   });
+//   myPromise
+//     .then((res) => {
+//       console.log("response", res);
+//     })
+//     .catch((err) => {
+//       console.log("error:", err);
+//     });
+// };
 
 // isOdd(2);
 
-const array = [8, 2, 3, 2, 4, 3, 1, 4, 6, 7];
-let arr2 = {};
+// const array = [8, 2, 3, 2, 4, 3, 1, 4, 6, 7];
+// let arr2 = {};
 
-for (var i = 0; i < array.length; i++) {
-  let x = array[i];
-  if (arr2[x] === undefined) {
-    arr2[x] = 1;
-  } else {
-    arr2[x]++;
-  }
-}
+// for (var i = 0; i < array.length; i++) {
+//   let x = array[i];
+//   if (arr2[x] === undefined) {
+//     arr2[x] = 1;
+//   } else {
+//     arr2[x]++;
+//   }
+// }
 
-let arr3 = [];
+// console.log(arr2);
 
-for (let y in arr2) {
-  arr3.push(y);
-}
+// let arr3 = [];
 
+// for (let y in arr2) {
+//   arr3.push(y);
+// }
+
+// console.log(er);
 // console.log(arr3);
 
-var string = "umang is presenting ";
+// var string = "umang is presenting ";
 
-function reverse(string) {
-  var str = "";
+// function reverse(string) {
+//   var str = "";
 
-  for (var i = string.length - 1; i >= 0; i--) {
-    if (string[i] === " ") {
-      for (var j = i + 1; j < string.length; j++) {
-        if (string[j] === " ") {
-          str += " ";
-          break;
-        }
-        str += string[j];
-        if (j === string.length - 1) {
-          str += " ";
-        }
-      }
-    }
-    if (i === 0) {
-      for (var k = i; k < string.length; k++) {
-        if (string[k] === " ") {
-          break;
-        } else {
-          str += string[k];
-        }
-      }
-    }
-  }
+//   for (var i = string.length - 1; i >= 0; i--) {
+//     if (string[i] === " ") {
+//       for (var j = i + 1; j < string.length; j++) {
+//         if (string[j] === " ") {
+//           str += " ";
+//           break;
+//         }
+//         str += string[j];
+//         if (j === string.length - 1) {
+//           str += " ";
+//         }
+//       }
+//     }
+//     if (i === 0) {
+//       for (var k = i; k < string.length; k++) {
+//         if (string[k] === " ") {
+//           break;
+//         } else {
+//           str += string[k];
+//         }
+//       }
+//     }
+//   }
   
-  console.log(str);
-}
+//   console.log(str);
+// }
 
-reverse(string);
+// reverse(string);
+
+
+
+
+// let a = 10;
+
+// function x(){
+//   a = 20;
+// }
+
+// x();
+// console.log(a);
+
+
+// const arr = new Array(4).fill([]);
+// arr[2].push(5);
+// console.log(arr);
+
+// var a;
+// console.log(a);
+
+// function a(w,...b){
+//   return w*b.length;
+// }
+
+// console.log(a(2,"juh","ijuh"));
+
+// var str = 'masai';
+// var arr = [...str];
+// console.log(arr);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
